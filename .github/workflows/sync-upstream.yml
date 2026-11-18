@@ -1,0 +1,16 @@
+# 원본(upstream) 저장소의 변경을 매일 이 포크로 받아 온다.
+name: Sync upstream
+on:
+  schedule:
+    - cron: "23 18 * * *"   # 매일 03:23 KST
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge upstream into main
+        run: gh repo sync "$GITHUB_REPOSITORY" --branch main
+        env:
+          GH_TOKEN: ${{ github.token }}
